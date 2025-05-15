@@ -19,10 +19,10 @@ expected_dashboard_url = "https://www.saucedemo.com/inventory.html"
 
 @pytest.fixture(scope="module")
 def driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless")  # Run in headless mode for CI/CD
-    driver = webdriver.Chrome(options=options)
-    # driver = webdriver.Chrome()  # Initialize the Chrome WebDriver
+    # options = webdriver.ChromeOptions()
+    # options.add_argument("--headless")  # Run in headless mode for CI/CD
+    # driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()  
     yield driver
     # Cleanup code after tests are done
     driver.quit()
@@ -46,7 +46,7 @@ def test_login_and_dashboard_url(driver):
     driver.find_element(By.ID, "user-name").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)
     driver.find_element(By.ID, "login-button").click()
-    time.sleep(3)  # Wait for the page to load
+    time.sleep(3) 
     assert driver.current_url == expected_dashboard_url, f"Expected URL: {expected_dashboard_url}, but got: {driver.current_url}"
     
 # The test case will also save the page source to a text file - Webpage_task_11.txt for further analysis.  
@@ -56,21 +56,22 @@ def test_login_and_dashboard_url(driver):
 def test_title_fail(driver):
     driver.get(login_url)
     # Intentionally using an incorrect title to trigger a failure
-    expected_title = "Incorrect Title"  # This should be an incorrect title
+    expected_title = "Incorrect Title"  
     assert driver.title == expected_title, f"Expected title: {expected_title}, but got: {driver.title}"
 
 
 def test_homepage_url_fail(driver):
     driver.get(login_url)
     # Intentionally using an incorrect URL to trigger a failure
-    expected_home_url = "https://www.example.com/"  # This should be a different URL
+    expected_home_url = "https://www.example.com/"  
     assert driver.current_url == expected_home_url, f"Expected URL: {expected_home_url}, but got: {driver.current_url}" 
 
 def test_login_and_dashboard_url_fail(driver):
+    # Intentionally using the wrong field for username and password to trigger a failure
     driver.get(login_url)
-    driver.find_element(By.ID, "password").send_keys(username) # Intentionally using the wrong field for username
-    driver.find_element(By.ID, "user-name").send_keys(password) # Intentionally using the wrong field for password
+    driver.find_element(By.ID, "password").send_keys(username) 
+    driver.find_element(By.ID, "user-name").send_keys(password) 
     # Intentionally using the wrong credentials to trigger a failure
     driver.find_element(By.ID, "login-button").click()
-    time.sleep(5)  # Wait for the page to load
+    time.sleep(5)
     assert driver.current_url == expected_dashboard_url, f"Expected URL: {expected_dashboard_url}, but got: {driver.current_url}"
